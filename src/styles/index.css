@@ -1,0 +1,8 @@
+.letter {
+	font-size: 5rem;
+	text-decoration: underline;
+}
+.letter-container {
+	display: flex;
+	gap: 1rem;
+}
