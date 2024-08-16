@@ -5,7 +5,7 @@
 		addNewLetter,
 		shiftLetterOneForward,
 		shiftLetterOneBackward,
-		binaryWordSearch
+		calculateWordScore
 	} from '../functions/gameFunctions';
 	import '../styles/index.css';
 	//flip this variable to show or hide game instructions
@@ -14,6 +14,8 @@
 	let letters: Array<string> = [];
 	let gameStarted = false;
 	let currentLetterShifted = false;
+	let endGameString: string = '';
+	let highScore = 0;
 	onMount(() => {
 		//fetch our local txt file and store the text in dictionaryString global variable
 		fetch(text)
@@ -22,9 +24,24 @@
 			.then(() => console.log(dictionaryStringArray));
 	});
 	function startGame() {
+		letters = [];
+		endGameString = '';
 		letters[0] = 's';
 		letters = addNewLetter(letters);
 		gameStarted = true;
+	}
+	function submitWord(dictionaryStringArray: Array<string>, word: string) {
+		let finalScore = calculateWordScore(dictionaryStringArray, word);
+		if (finalScore === 0) {
+			endGameString = 'this is not a valid word. Game OVER';
+			gameStarted = false;
+		} else {
+			endGameString = `${word}: ${finalScore} points! Nice one.`;
+			if (finalScore > highScore) {
+				highScore = finalScore;
+			}
+			gameStarted = false;
+		}
 	}
 </script>
 
@@ -32,6 +49,7 @@
 	<title>Letter game</title>
 </svelte:head>
 <h1>Letter game sletters</h1>
+<p>Highscore: {highScore}</p>
 <button on:click={() => (howToPlayShowing = !howToPlayShowing)}>How to play</button>
 <section style={howToPlayShowing ? 'display: block;' : 'display: none;'}>
 	<h2>How to play:</h2>
@@ -59,7 +77,7 @@
 		<p>Make a copy of another letter you have active.</p>
 	</ol>
 </section>
-<button on:click={startGame}>Play</button>
+<button on:click={startGame}>Play/Restart</button>
 <!-- display the letters here -->
 <div class="letter-container">
 	{#each letters as letter}
@@ -87,6 +105,5 @@
 		currentLetterShifted = true;
 	}}>shift backward</button
 >
-<button on:click={() => alert(binaryWordSearch(dictionaryStringArray, letters.join('').toLocaleUpperCase()))}
-	>Submit Word</button
->
+<button on:click={() => submitWord(dictionaryStringArray, letters.join(''))}>Submit Word</button>
+<p>{endGameString}</p>
