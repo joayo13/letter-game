@@ -26,6 +26,7 @@
 	function startGame() {
 		letters = [];
 		endGameString = '';
+		currentLetterShifted = false;
 		letters[0] = 's';
 		letters = addNewLetter(letters);
 		gameStarted = true;
