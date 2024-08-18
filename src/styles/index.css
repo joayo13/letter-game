@@ -1,6 +1,12 @@
 .letter {
 	font-size: 5rem;
 	text-decoration: underline;
+	width: 5rem;
+}
+.any-letter {
+	all: unset;
+	font-size: 5rem;
+	width: 5rem;
 }
 .letter-container {
 	display: flex;

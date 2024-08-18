@@ -8,6 +8,7 @@
 		calculateWordScore
 	} from '../functions/gameFunctions';
 	import '../styles/index.css';
+	import { cloneLetter, rerollLetter, anyLetter } from '../functions/powerupFunctions';
 	//flip this variable to show or hide game instructions
 	let howToPlayShowing = false;
 	let dictionaryStringArray: Array<string>;
@@ -16,6 +17,13 @@
 	let currentLetterShifted = false;
 	let endGameString: string = '';
 	let highScore = 0;
+	let anyLetterValue: string = '';
+	///powerups (can only be used once each per play)
+	let rerollUsed = false;
+	let isCloning = false;
+	let cloneUsed = false;
+	let isAnyLettering = false;
+	let anyLetterUsed = false;
 	onMount(() => {
 		//fetch our local txt file and store the text in dictionaryString global variable
 		fetch(text)
@@ -27,6 +35,11 @@
 		letters = [];
 		endGameString = '';
 		currentLetterShifted = false;
+		rerollUsed = false;
+		cloneUsed = false;
+		anyLetterUsed = false;
+		isCloning = false;
+		isAnyLettering = false;
 		letters[0] = 's';
 		letters = addNewLetter(letters);
 		gameStarted = true;
@@ -34,7 +47,7 @@
 	function submitWord(dictionaryStringArray: Array<string>, word: string) {
 		let finalScore = calculateWordScore(dictionaryStringArray, word);
 		if (finalScore === 0) {
-			endGameString = 'this is not a valid word. Game OVER';
+			endGameString = `${word} is not a valid word. Game over.`;
 			gameStarted = false;
 		} else {
 			endGameString = `${word}: ${finalScore} points! Nice one.`;
@@ -81,9 +94,32 @@
 <button on:click={startGame}>Play/Restart</button>
 <!-- display the letters here -->
 <div class="letter-container">
-	{#each letters as letter}
+	{#each letters as letter, index}
 		<span class="letter">{letter}</span>
+		<button
+			style={isCloning && index !== letters.length - 1 ? 'display: block;' : 'display: none;'}
+			on:click={() => {
+				letters = cloneLetter(letters, letter);
+				cloneUsed = true;
+				isCloning = false;
+			}}>Clone {letter}</button
+		>
 	{/each}
+	<input
+		style={isAnyLettering ? 'display: block;' : 'display: none;'}
+		class="any-letter"
+		on:change={(e) => {
+			letters = anyLetter(letters, e.target);
+			anyLetterUsed = true;
+			isAnyLettering = false;
+			anyLetterValue = '';
+		}}
+		bind:value={anyLetterValue}
+		placeholder="?"
+		type="text"
+		maxlength="1"
+		minlength="1"
+	/>
 </div>
 <button
 	style={gameStarted ? 'display: block;' : 'display: none;'}
@@ -106,5 +142,23 @@
 		currentLetterShifted = true;
 	}}>shift backward</button
 >
-<button on:click={() => submitWord(dictionaryStringArray, letters.join(''))}>Submit Word</button>
+<button
+	style={rerollUsed || !gameStarted ? 'display: none;' : 'display: block;'}
+	on:click={() => {
+		letters = rerollLetter(letters);
+		rerollUsed = true;
+	}}>reroll</button
+>
+<button
+	style={cloneUsed || !gameStarted ? 'display:none;' : 'display: block;'}
+	on:click={() => (isCloning = !isCloning)}>clone letter</button
+>
+<button
+	style={anyLetterUsed || !gameStarted ? 'display:none;' : 'display'}
+	on:click={() => (isAnyLettering = true)}>any letter</button
+>
+<button
+	style={!gameStarted ? 'display: none;' : 'display: block;'}
+	on:click={() => submitWord(dictionaryStringArray, letters.join(''))}>Submit Word</button
+>
 <p>{endGameString}</p>
