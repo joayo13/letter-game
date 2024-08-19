@@ -5,6 +5,7 @@ function addNewLetter(letters: Array<string>) {
 	console.log(random);
 	return [...letters, random];
 }
+//TODO: return just shifted letter from here, so we can reuse for displaying the shifted forward/backward preview
 function shiftLetterOneForward(letters: Array<string>) {
 	//value of current letter we are shifting
 	const currentLetter = letters[letters.length - 1];

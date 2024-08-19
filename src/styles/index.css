@@ -1,3 +1,20 @@
+:root {
+	--bg-color-page: #e7e7e7;
+	--bg-color-nav: #eeeeee;
+	--bg-color-banner: #cecece;
+	--text-color: #131313;
+}
+
+.dark-mode {
+	--bg-color-page: #121f2b;
+	--bg-color-nav: #090b13;
+	--bg-color-banner: #203b4d;
+	--text-color: #ececec;
+}
+body {
+	background-color: var(--bg-color-page);
+	color: var(--text-color);
+}
 .letter {
 	font-size: 5rem;
 	text-decoration: underline;
