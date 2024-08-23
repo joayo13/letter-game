@@ -63,6 +63,8 @@
 </script>
 
 <main>
+	<!-- added margin to make sure our pages appear below nav -->
+	<div style="margin-top: 5rem;"></div>
 	<nav>
 		{#if is_mobile && nav_visible}
 			<div
@@ -96,7 +98,7 @@
 				</a>
 				<div style="flex-grow: 1;"></div>
 				<div>
-					<a href="/signin">Sign In</a>
+					<a href="/sign-in">Sign In</a>
 				</div>
 				<button
 					aria-label={isThemeSwitchDark ? 'Switch to light mode' : 'Switch to dark mode'}
@@ -154,7 +156,7 @@
 				aria-hidden={!menu_open}
 				transition:slide={{ delay: 250, duration: 300, easing: quintOut, axis: 'x' }}
 			>
-				<a on:click={toggleMenu} href="/signin">Sign In</a>
+				<a on:click={toggleMenu} href="/sign-in">Sign In</a>
 				<div class="main-nav-mobile-divider"></div>
 				<button
 					aria-label={isThemeSwitchDark ? 'Switch to light mode' : 'Switch to dark mode'}
@@ -211,31 +213,8 @@
 		</p>
 		<nav class="footer-nav">
 			<a href="/">Home</a>
-			<a href="/signin">Sign In</a>
+			<a href="/sign-in">Sign In</a>
 		</nav>
-		<div class="social-media">
-			<a
-				href="https://www.facebook.com"
-				aria-label="Facebook"
-				target="_blank"
-				rel="noopener noreferrer"
-			>facebook
-			</a>
-			<a
-				href="https://www.twitter.com"
-				aria-label="Twitter"
-				target="_blank"
-				rel="noopener noreferrer"
-			>twitter
-			</a>
-			<a
-				href="https://www.instagram.com"
-				aria-label="Instagram"
-				target="_blank"
-				rel="noopener noreferrer"
-			>insta
-			</a>
-		</div>
 	</footer>
 </main>
 
@@ -292,7 +271,18 @@
 	.main-nav-mobile {
 		padding: 1rem;
 		margin-top: 5rem;
-		font-family: 'Montserrat', sans-serif;
+		font-family:
+			system-ui,
+			-apple-system,
+			BlinkMacSystemFont,
+			'Segoe UI',
+			Roboto,
+			Oxygen,
+			Ubuntu,
+			Cantarell,
+			'Open Sans',
+			'Helvetica Neue',
+			sans-serif;
 		position: fixed;
 		top: 0;
 		right: 0;
@@ -319,7 +309,18 @@
 		padding-bottom: 1rem;
 	}
 	.navbar-mobile {
-		font-family: 'Montserrat', sans-serif;
+		font-family:
+			system-ui,
+			-apple-system,
+			BlinkMacSystemFont,
+			'Segoe UI',
+			Roboto,
+			Oxygen,
+			Ubuntu,
+			Cantarell,
+			'Open Sans',
+			'Helvetica Neue',
+			sans-serif;
 		background-color: var(--bg-color-nav);
 		position: fixed;
 		top: 0;
@@ -336,7 +337,18 @@
 	}
 
 	.navbar-desktop {
-		font-family: 'Montserrat', sans-serif;
+		font-family:
+			system-ui,
+			-apple-system,
+			BlinkMacSystemFont,
+			'Segoe UI',
+			Roboto,
+			Oxygen,
+			Ubuntu,
+			Cantarell,
+			'Open Sans',
+			'Helvetica Neue',
+			sans-serif;
 		background-color: var(--bg-color-nav);
 		position: fixed;
 		top: 0;
@@ -369,7 +381,18 @@
 	footer {
 		position: relative;
 		padding: 2rem;
-		font-family: 'Montserrat', sans-serif;
+		font-family:
+			system-ui,
+			-apple-system,
+			BlinkMacSystemFont,
+			'Segoe UI',
+			Roboto,
+			Oxygen,
+			Ubuntu,
+			Cantarell,
+			'Open Sans',
+			'Helvetica Neue',
+			sans-serif;
 		height: 15rem;
 		background-color: var(--bg-color-nav);
 		color: var(--text-color);
@@ -386,12 +409,6 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
-	}
-	.social-media {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: center;
-		gap: 2rem;
 	}
 	/*!
  * Hamburgers
