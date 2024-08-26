@@ -2,12 +2,27 @@
 	import { onMount } from 'svelte';
 	import { fade, slide } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
+	import { invalidate } from '$app/navigation'
 	import '../styles/index.css';
 	let is_mobile = false;
 	let menu_open = false;
 	let nav_visible = true;
 	let prev_scrollY: number;
 	let isThemeSwitchDark = false;
+	export let data
+
+	let { supabase, session } = data
+	$: ({ supabase, session } = data)
+
+	onMount(() => {
+		const { data } = supabase.auth.onAuthStateChange((event, newSession) => {
+			if (newSession?.expires_at !== session?.expires_at) {
+				invalidate('supabase:auth')
+			}
+		})
+
+		return () => data.subscription.unsubscribe()
+	})
 
 	function setThemeOnLoad() {
 		const storedTheme = sessionStorage.getItem('theme');
