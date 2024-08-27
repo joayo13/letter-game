@@ -2,27 +2,28 @@
 	import { onMount } from 'svelte';
 	import { fade, slide } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
-	import { invalidate } from '$app/navigation'
+	import { invalidate } from '$app/navigation';
 	import '../styles/index.css';
-	let is_mobile = false;
-	let menu_open = false;
-	let nav_visible = true;
-	let prev_scrollY: number;
+	let isMobile = false;
+	let menuOpen = false;
+	let navVisible = true;
+	let prevScrollY: number;
 	let isThemeSwitchDark = false;
-	export let data
+	let userEmail: string;
+	export let data;
 
-	let { supabase, session } = data
-	$: ({ supabase, session } = data)
+	let { supabase, session } = data;
+	$: ({ supabase, session } = data);
 
 	onMount(() => {
 		const { data } = supabase.auth.onAuthStateChange((event, newSession) => {
 			if (newSession?.expires_at !== session?.expires_at) {
-				invalidate('supabase:auth')
+				invalidate('supabase:auth');
 			}
-		})
+		});
 
-		return () => data.subscription.unsubscribe()
-	})
+		return () => data.subscription.unsubscribe();
+	});
 
 	function setThemeOnLoad() {
 		const storedTheme = sessionStorage.getItem('theme');
@@ -50,26 +51,33 @@
 		}
 	}
 	function toggleMenu() {
-		menu_open = !menu_open;
-		document.body.style.overflow = menu_open ? 'hidden' : 'auto';
+		menuOpen = !menuOpen;
+		document.body.style.overflow = menuOpen ? 'hidden' : 'auto';
 	}
 
 	function handleOverlayClick() {
 		toggleMenu();
 	}
 	function checkMobile() {
-		is_mobile = window.matchMedia('(max-width: 768px)').matches;
+		isMobile = window.matchMedia('(max-width: 768px)').matches;
 	}
 	function checkNavShouldBeVisible() {
-		if (window.scrollY > 200 && window.scrollY > prev_scrollY) {
-			nav_visible = false;
-		} else if (window.scrollY < prev_scrollY) {
-			nav_visible = true;
+		if (window.scrollY > 200 && window.scrollY > prevScrollY) {
+			navVisible = false;
+		} else if (window.scrollY < prevScrollY) {
+			navVisible = true;
 		}
-		prev_scrollY = window.scrollY;
+		prevScrollY = window.scrollY;
+	}
+	async function getUser() {
+		let auth = await supabase.auth.getUser();
+		if (auth.data.user && auth.data.user.email) {
+			userEmail = auth.data.user.email;
+		}
 	}
 
-	onMount(() => {
+	onMount(async () => {
+		getUser();
 		setThemeOnLoad();
 		checkMobile();
 		window.addEventListener('resize', checkMobile);
@@ -81,7 +89,7 @@
 	<!-- added margin to make sure our pages appear below nav -->
 	<div style="margin-top: 5rem;"></div>
 	<nav>
-		{#if is_mobile && nav_visible}
+		{#if isMobile && navVisible}
 			<div
 				class="navbar-mobile"
 				role="navigation"
@@ -91,9 +99,9 @@
 					<strong>SLETTERS</strong>
 				</a>
 				<button
-					class={`hamburger hamburger--collapse ${menu_open ? 'is-active' : ''}`}
+					class={`hamburger hamburger--collapse ${menuOpen ? 'is-active' : ''}`}
 					on:click={toggleMenu}
-					aria-expanded={menu_open}
+					aria-expanded={menuOpen}
 					aria-controls="mobile-menu"
 				>
 					<span class="hamburger-box">
@@ -101,7 +109,7 @@
 					</span>
 				</button>
 			</div>
-		{:else if !is_mobile && nav_visible}
+		{:else if !isMobile && navVisible}
 			<div
 				role="navigation"
 				aria-label="Main Navigation"
@@ -112,6 +120,7 @@
 					<strong>SLETTERS</strong>
 				</a>
 				<div style="flex-grow: 1;"></div>
+				<p>{userEmail}</p>
 				<div>
 					<a href="/sign-in">Sign In</a>
 				</div>
@@ -157,7 +166,7 @@
 				</button>
 			</div>
 		{/if}
-		{#if menu_open}
+		{#if menuOpen}
 			<div
 				class="overlay"
 				on:click={handleOverlayClick}
@@ -168,7 +177,7 @@
 				class="main-nav-mobile"
 				role="navigation"
 				aria-label="Main Navigation"
-				aria-hidden={!menu_open}
+				aria-hidden={!menuOpen}
 				transition:slide={{ delay: 250, duration: 300, easing: quintOut, axis: 'x' }}
 			>
 				<a on:click={toggleMenu} href="/sign-in">Sign In</a>

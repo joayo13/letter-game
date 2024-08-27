@@ -1,18 +1,18 @@
 <script lang="ts">
-	import { enhance } from '$app/forms'
-	import type { ActionData, SubmitFunction } from './$types.js'
+	import { enhance } from '$app/forms';
+	import type { ActionData, SubmitFunction } from './$types.js';
 
 	export let form: ActionData;
 
-	let loading = false
+	let loading = false;
 
 	const handleSubmit: SubmitFunction = () => {
-		loading = true
+		loading = true;
 		return async ({ update }) => {
-			update()
-			loading = false
-		}
-	}
+			update();
+			loading = false;
+		};
+	};
 </script>
 
 <svelte:head>
@@ -24,9 +24,9 @@
 		<h1 class="header">Supabase + SvelteKit</h1>
 		<p class="description">Sign in via magic link with your email below</p>
 		{#if form?.message !== undefined}
-		<div class="success {form?.success ? '' : 'fail'}">
-			{form?.message}
-		</div>
+			<div class="success {form?.success ? '' : 'fail'}">
+				{form?.message}
+			</div>
 		{/if}
 		<div>
 			<label for="email">Email address</label>
@@ -40,13 +40,13 @@
 			/>
 		</div>
 		{#if form?.errors?.email}
-		<span class="flex items-center text-sm error">
-			{form?.errors?.email}
-		</span>
+			<span class="flex items-center text-sm error">
+				{form?.errors?.email}
+			</span>
 		{/if}
 		<div>
 			<button class="button primary block">
-				{ loading ? 'Loading' : 'Send magic link' }
+				{loading ? 'Loading' : 'Send magic link'}
 			</button>
 		</div>
 	</div>

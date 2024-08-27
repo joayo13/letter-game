@@ -29,7 +29,7 @@
 			.then((r) => r.text())
 			.then((t) => (dictionaryStringArray = t.split('\n')))
 			.then(() => console.log(dictionaryStringArray));
-        startGame()
+		startGame();
 	});
 	function startGame() {
 		letters = [];
@@ -58,75 +58,76 @@
 		}
 	}
 </script>
+
 <!-- display the letters here -->
- <div class="page-centerer">
-<div class="letter-container">
-	{#each letters as letter, index}
-		<span class="letter">{letter}</span>
-		<button
-			style={isCloning && index !== letters.length - 1 ? 'display: block;' : 'display: none;'}
-			on:click={() => {
-				letters = cloneLetter(letters, letter);
-				cloneUsed = true;
-				isCloning = false;
-			}}>Clone {letter}</button
-		>
-	{/each}
-	<input
-		style={isAnyLettering ? 'display: block;' : 'display: none;'}
-		class="any-letter"
-		on:change={(e) => {
-			letters = anyLetter(letters, e.target);
-			anyLetterUsed = true;
-			isAnyLettering = false;
-			anyLetterValue = '';
-		}}
-		bind:value={anyLetterValue}
-		placeholder="?"
-		type="text"
-		maxlength="1"
-		minlength="1"
-	/>
-</div>
-<button
-	style={gameStarted ? 'display: block;' : 'display: none;'}
-	on:click={() => {
-		letters = addNewLetter(letters);
-		currentLetterShifted = false;
-	}}>Next Letter</button
->
-<button
-	style={currentLetterShifted || !gameStarted ? 'display: none;' : 'display: block;'}
-	on:click={() => {
-		letters = shiftLetterOneForward(letters);
-		currentLetterShifted = true;
-	}}>shift forward</button
->
-<button
-	style={currentLetterShifted || !gameStarted ? 'display: none;' : 'display: block;'}
-	on:click={() => {
-		letters = shiftLetterOneBackward(letters);
-		currentLetterShifted = true;
-	}}>shift backward</button
->
-<button
-	style={rerollUsed || !gameStarted ? 'display: none;' : 'display: block;'}
-	on:click={() => {
-		letters = rerollLetter(letters);
-		rerollUsed = true;
-	}}>reroll</button
->
-<button
-	style={cloneUsed || !gameStarted ? 'display:none;' : 'display: block;'}
-	on:click={() => (isCloning = !isCloning)}>clone letter</button
->
-<button
-	style={anyLetterUsed || !gameStarted ? 'display:none;' : 'display'}
-	on:click={() => (isAnyLettering = true)}>any letter</button
->
-<button
-	style={!gameStarted ? 'display: none;' : 'display: block;'}
-	on:click={() => submitWord(dictionaryStringArray, letters.join(''))}>Submit Word</button
->
-<p>{endGameString}</p>
+<div class="page-centerer">
+	<div class="letter-container">
+		{#each letters as letter, index}
+			<span class="letter">{letter}</span>
+			<button
+				style={isCloning && index !== letters.length - 1 ? 'display: block;' : 'display: none;'}
+				on:click={() => {
+					letters = cloneLetter(letters, letter);
+					cloneUsed = true;
+					isCloning = false;
+				}}>Clone {letter}</button
+			>
+		{/each}
+		<input
+			style={isAnyLettering ? 'display: block;' : 'display: none;'}
+			class="any-letter"
+			on:change={(e) => {
+				letters = anyLetter(letters, e.target);
+				anyLetterUsed = true;
+				isAnyLettering = false;
+				anyLetterValue = '';
+			}}
+			bind:value={anyLetterValue}
+			placeholder="?"
+			type="text"
+			maxlength="1"
+			minlength="1"
+		/>
+	</div>
+	<button
+		style={gameStarted ? 'display: block;' : 'display: none;'}
+		on:click={() => {
+			letters = addNewLetter(letters);
+			currentLetterShifted = false;
+		}}>Next Letter</button
+	>
+	<button
+		style={currentLetterShifted || !gameStarted ? 'display: none;' : 'display: block;'}
+		on:click={() => {
+			letters = shiftLetterOneForward(letters);
+			currentLetterShifted = true;
+		}}>shift forward</button
+	>
+	<button
+		style={currentLetterShifted || !gameStarted ? 'display: none;' : 'display: block;'}
+		on:click={() => {
+			letters = shiftLetterOneBackward(letters);
+			currentLetterShifted = true;
+		}}>shift backward</button
+	>
+	<button
+		style={rerollUsed || !gameStarted ? 'display: none;' : 'display: block;'}
+		on:click={() => {
+			letters = rerollLetter(letters);
+			rerollUsed = true;
+		}}>reroll</button
+	>
+	<button
+		style={cloneUsed || !gameStarted ? 'display:none;' : 'display: block;'}
+		on:click={() => (isCloning = !isCloning)}>clone letter</button
+	>
+	<button
+		style={anyLetterUsed || !gameStarted ? 'display:none;' : 'display'}
+		on:click={() => (isAnyLettering = true)}>any letter</button
+	>
+	<button
+		style={!gameStarted ? 'display: none;' : 'display: block;'}
+		on:click={() => submitWord(dictionaryStringArray, letters.join(''))}>Submit Word</button
+	>
+	<p>{endGameString}</p>
 </div>
