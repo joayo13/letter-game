@@ -122,7 +122,12 @@
 				<div style="flex-grow: 1;"></div>
 				<p>{userEmail}</p>
 				<div>
+					{#if !userEmail}
 					<a href="/sign-in">Sign In</a>
+					{:else}
+					<a href="/sign-out">Sign Out</a>
+					{/if}
+
 				</div>
 				<button
 					aria-label={isThemeSwitchDark ? 'Switch to light mode' : 'Switch to dark mode'}
